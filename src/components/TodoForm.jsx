@@ -2,12 +2,11 @@
 import {
   FormControl,
   FormErrorMessage,
-  FormLabel,
   Input,
   Select,
-  Button,
   Stack,
 } from "@chakra-ui/react";
+import FlatButton from "./FlatButton";
 //hook
 import { useForm } from "react-hook-form";
 import { useContext } from "react";
@@ -23,48 +22,67 @@ export default function TodoForm() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({ resolver: yupResolver(scheme) });
   const { addTodo } = useContext(todoContext);
   function onSubmitTodo(data) {
     addTodo({ name: data.name, severity: data.severity });
+    reset({
+      name: "",
+      severity: 0,
+    });
   }
 
   return (
     <form className="w-full " onSubmit={handleSubmit(onSubmitTodo)}>
       <Stack spacing={3}>
         <FormControl isInvalid={errors.name}>
-          <FormLabel>Description</FormLabel>
           <Input
-            id="name"
             className="w-full"
+            focusBorderColor="black.300"
+            errorBorderColor="black.300"
+            _hover={{ borderColor: "black.300" }}
+            borderColor="black.300"
+            border="2px"
+            id="name"
             variant="outline"
-            placeholder="Describe your issue ..."
+            placeholder="Describe your todo ..."
             {...register("name")}
           />
-          <FormErrorMessage>
+          <FormErrorMessage color="black.300" fontWeight="bold">
             {errors.name && errors.name.message}
           </FormErrorMessage>
         </FormControl>
         <FormControl isInvalid={errors.severity}>
-          <FormLabel>Severity</FormLabel>
           <Select
+            focusBorderColor="black.300"
+            _hover={{ borderColor: "black.300" }}
+            errorBorderColor="black.300"
+            borderColor="black.300"
+            border="2px"
             id="severity"
             {...register("severity")}
             className="w-full"
-            placeholder="Select option"
+            placeholder="Severity"
           >
             <option value={0}>Low</option>
             <option value={1}>Medium</option>
             <option value={2}>High</option>
           </Select>
-          <FormErrorMessage>
+          <FormErrorMessage color="black.300" fontWeight="bold">
             {errors.severity && errors.severity.message}
           </FormErrorMessage>
         </FormControl>
-        <Button mt={4} colorScheme="teal" type="submit">
+        <FlatButton
+          minWidth="200px"
+          className="ml-auto"
+          _hover={{ dropShadow: "7px 5px 0px #000000" }}
+          mt={4}
+          type="submit"
+        >
           Add
-        </Button>
+        </FlatButton>
       </Stack>
     </form>
   );

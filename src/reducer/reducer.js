@@ -1,12 +1,6 @@
 import { actions } from "../action/action";
-/*
-initState ={
-todos:[],
-queriedTodos:[],
-}
-*/
+
 export const todoReducer = (todoState, { type, payload }) => {
-  console.log("type la", type, payload);
   switch (type) {
     case actions.ADD_TODO:
       return payload;

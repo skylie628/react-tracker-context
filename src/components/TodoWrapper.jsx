@@ -13,7 +13,7 @@ import { v4 as uuid } from "uuid";
 export default function TodoWrapper() {
   const [todoState, dispatch] = useReducer(todoReducer, {
     todos: [],
-    filterBy: "All",
+    filterBy: "ALL",
     sortBy: "ASC",
     searchBy: null,
   });
@@ -22,6 +22,9 @@ export default function TodoWrapper() {
       payload: {
         ...todoState,
         todos: [...todoState.todos, { id: uuid(), status: true, ...todo }],
+        filterBy: "ALL",
+        sortBy: "ASC",
+        searchBy: "",
       },
       type: actions.ADD_TODO,
     });
@@ -83,8 +86,7 @@ export default function TodoWrapper() {
   return (
     <todoContext.Provider
       value={{
-        todos: todoState.todos,
-        queriedTodos: todoState.queriedTodos,
+        ...todoState,
         addTodo,
         closeTodo,
         removeTodo,
@@ -93,9 +95,11 @@ export default function TodoWrapper() {
         searchTodos,
       }}
     >
-      <Box className="w-screen flex  flex-col items-center">
-        <Stack w="50%" bg="white" spacing={8}>
-          <h1 className=" text-lg">To do tracker</h1>
+      <Box className="w-screen flex  flex-col items-center p-10">
+        <Stack className="w-full lg:w-6/12" bg="white" spacing={8}>
+          <h1 className=" text-3xl">
+            <b>To do tracker</b>
+          </h1>
           <TodoForm />
           <Divider />
           <Filtering />
